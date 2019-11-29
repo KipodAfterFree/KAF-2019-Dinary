@@ -11,7 +11,7 @@ public class Encoder {
     private static File ROOT_DIRECTORY = new File(System.getProperty("user.dir"));
 
     public static void main(String[] args) {
-        int size = 4096;
+        int size = 925;
 
         BufferedImage bufferedImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
 
@@ -45,7 +45,7 @@ public class Encoder {
             ArrayList<Boolean> bits = new ArrayList<>();
             for (byte b : bytes) {
                 for (int i = 0; i < 8; i++) {
-                    bits.add((b << i & 1) == 1);
+                    bits.add((b >> i & 1) == 1);
                 }
             }
             return bits;
