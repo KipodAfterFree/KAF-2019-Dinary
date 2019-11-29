@@ -11,19 +11,18 @@ public class Encoder {
     private static File ROOT_DIRECTORY = new File(System.getProperty("user.dir"));
 
     public static void main(String[] args) {
-        int width = 250;
-        int height = 250;
+        int size = 4096;
 
-        BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        BufferedImage bufferedImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
 
         Graphics2D g2d = bufferedImage.createGraphics();
 
         ArrayList<Boolean> bits = toBinary(new File(new File(ROOT_DIRECTORY, "binary"), "binary"));
 
         for (int i = 0; i < bits.size(); i++) {
-            int x = i % width;
-            int y = (i - x) / width;
-            g2d.setColor(bits.get(i) ? Color.black : Color.white);
+            int x = i % size;
+            int y = (i - x) / size;
+            g2d.setColor(bits.get(i) ? Color.white : Color.black);
             g2d.drawLine(x, y, x, y);
         }
 
