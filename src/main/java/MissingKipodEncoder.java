@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class MissingKipodEncoder {
     private static String string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+<>?,./:{}";
-    private static String flag = "KAF{i_9u355_w3_f0und_h1m_f1na11y!}";
+    private static String flag = "KAF{i_9u355_w3_f0und_h1m_f1na11y}";
     private static Random random = new Random();
 
     public static void main(String[] args) {

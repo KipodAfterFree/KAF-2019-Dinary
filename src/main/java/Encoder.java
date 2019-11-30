@@ -4,30 +4,27 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.util.ArrayList;
 
 public class Encoder {
 
     public static void main(String[] args) {
-        int size = 897;
+        int size = 8192;
 
         BufferedImage bufferedImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
 
-        Graphics2D g2d = bufferedImage.createGraphics();
+        byte[] bytes = readData();
 
-        ArrayList<Boolean> bits = readData();
-
-        for (int i = 0; i < bits.size(); i++) {
-            int x = i % size;
-            int y = (i - x) / size;
-            g2d.setColor(bits.get(i) ? Color.white : Color.black);
-            g2d.drawLine(x, y, x, y);
+        for (int i = 0; i < bytes.length; i++) {
+            byte section = bytes[i];
+            for (int bit = 0; bit < 8; bit++) {
+                int pixel = i * 8 + bit;
+                int pixelX = pixel % size;
+                int pixelY = (pixel - pixelX) / size;
+                bufferedImage.setRGB(pixelX, pixelY, ((section >> bit & 1) == 1 ? Color.white : Color.black).getRGB());
+            }
         }
 
-        // fill all the image with white
-        g2d.setColor(Color.white);
-
-        g2d.dispose();
+        System.out.println("Writing");
 
         File file = new File(new File(Dinary.ROOT_DIRECTORY, "dinary"), "dinary.png");
         try {
@@ -37,22 +34,15 @@ public class Encoder {
         }
     }
 
-    private static ArrayList<Boolean> readData() {
+    private static byte[] readData() {
         try {
             File bin = new File(new File(Dinary.ROOT_DIRECTORY, "binary"), "binary");
             File map = new File(new File(Dinary.ROOT_DIRECTORY, "binary"), "map");
-            String string = new String(Files.readAllBytes(bin.toPath())).replaceAll("\\[MAP\\]",new String(Files.readAllBytes(map.toPath())));
-            byte[] bytes = string.getBytes();
-            ArrayList<Boolean> bits = new ArrayList<>();
-            for (byte b : bytes) {
-                for (int i = 0; i < 8; i++) {
-                    bits.add((b >> i & 1) == 1);
-                }
-            }
-            return bits;
+            String string = new String(Files.readAllBytes(bin.toPath())).replace("[MAP]", new String(Files.readAllBytes(map.toPath())));
+            return string.getBytes();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return new ArrayList<>();
+        return new byte[0];
     }
 }
