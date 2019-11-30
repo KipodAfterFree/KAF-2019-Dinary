@@ -5,22 +5,22 @@ import java.util.ArrayList;
 import java.util.Random;
 
 public class MissingKipodEncoder {
-    private static String string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+<>?,./:";
-    private static String flag = "KAF{kxkxkx_i_9u355_w3_f0und_h1m_f1na11y_1_mi553d_h1m_50_much_<3}";
+    private static String string = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+<>?,./:{}";
+    private static String flag = "KAF{i_9u355_w3_f0und_h1m_f1na11y!}";
     private static Random random = new Random();
 
     public static void main(String[] args) {
         int fiboOffset = new Random().nextInt(10000);
         int fiboIndex = 0;
-        ArrayList<Integer> fiboObjects = new ArrayList<>();
-        fiboObjects.add(0);
-        fiboObjects.add(1);
+        ArrayList<Long> fiboObjects = new ArrayList<>();
+        fiboObjects.add((long) 0);
+        fiboObjects.add((long) 1);
         for (int i = 0; i < flag.length(); i++) {
             fiboObjects.add(fiboObject(i + 2, fiboObjects));
             System.out.println(i + " - " + fiboObjects.get(fiboObjects.size() - 1));
         }
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < 10000000; i++) {
+        for (int i = 0; i < fiboObjects.get(fiboObjects.size() - 1)+fiboOffset; i++) {
             if (fiboIndex < flag.length() && fiboObjects.get(fiboIndex + 2) == i + 1 - fiboOffset) {
                 builder.append(flag.charAt(fiboIndex));
                 fiboIndex++;
@@ -38,7 +38,7 @@ public class MissingKipodEncoder {
         }
     }
 
-    private static int fiboObject(int fiboIndex, ArrayList<Integer> objects) {
+    private static long fiboObject(int fiboIndex, ArrayList<Long> objects) {
         if (fiboIndex < objects.size())
             return objects.get(fiboIndex);
         return fiboObject(fiboIndex - 1, objects) + fiboObject(fiboIndex - 2, objects);
