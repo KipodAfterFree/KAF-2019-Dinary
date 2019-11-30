@@ -8,16 +8,14 @@ import java.util.ArrayList;
 
 public class Encoder {
 
-    private static File ROOT_DIRECTORY = new File(System.getProperty("user.dir"));
-
     public static void main(String[] args) {
-        int size = 925;
+        int size = 897;
 
         BufferedImage bufferedImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
 
         Graphics2D g2d = bufferedImage.createGraphics();
 
-        ArrayList<Boolean> bits = toBinary(new File(new File(ROOT_DIRECTORY, "binary"), "binary"));
+        ArrayList<Boolean> bits = readData();
 
         for (int i = 0; i < bits.size(); i++) {
             int x = i % size;
@@ -31,7 +29,7 @@ public class Encoder {
 
         g2d.dispose();
 
-        File file = new File(new File(ROOT_DIRECTORY, "dinary"), "dinary.png");
+        File file = new File(new File(Dinary.ROOT_DIRECTORY, "dinary"), "dinary.png");
         try {
             ImageIO.write(bufferedImage, "png", file);
         } catch (IOException e) {
@@ -39,9 +37,12 @@ public class Encoder {
         }
     }
 
-    private static ArrayList<Boolean> toBinary(File file) {
+    private static ArrayList<Boolean> readData() {
         try {
-            byte[] bytes = Files.readAllBytes(file.toPath());
+            File bin = new File(new File(Dinary.ROOT_DIRECTORY, "binary"), "binary");
+            File map = new File(new File(Dinary.ROOT_DIRECTORY, "binary"), "map");
+            String string = new String(Files.readAllBytes(bin.toPath())).replaceAll("\\[MAP\\]",new String(Files.readAllBytes(map.toPath())));
+            byte[] bytes = string.getBytes();
             ArrayList<Boolean> bits = new ArrayList<>();
             for (byte b : bytes) {
                 for (int i = 0; i < 8; i++) {

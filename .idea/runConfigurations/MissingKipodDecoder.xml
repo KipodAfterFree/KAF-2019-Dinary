@@ -1,0 +1,9 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="MissingKipodDecoder" type="Application" factoryName="Application" singleton="true" nameIsGenerated="true">
+    <option name="MAIN_CLASS_NAME" value="MissingKipodDecoder" />
+    <module name="2019-Dinary_main" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
