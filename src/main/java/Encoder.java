@@ -4,13 +4,16 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.util.Random;
 
 public class Encoder {
 
     public static void main(String[] args) {
-        int size = 8192;
+        int size = 6907;
 
         BufferedImage bufferedImage = new BufferedImage(size, size, BufferedImage.TYPE_INT_RGB);
+
+        Random random = new Random();
 
         byte[] bytes = readData();
 
@@ -20,15 +23,24 @@ public class Encoder {
                 int pixel = i * 8 + bit;
                 int pixelX = pixel % size;
                 int pixelY = (pixel - pixelX) / size;
-                bufferedImage.setRGB(pixelX, pixelY, ((section >> bit & 1) == 1 ? Color.white : Color.black).getRGB());
+                if (pixelY < size) {
+                    bufferedImage.setRGB(pixelX, pixelY, ((section >> bit & 1) == 1 ? Color.white : Color.black).getRGB());
+                }
             }
         }
 
-        System.out.println("Writing");
+        for (int bits = bytes.length * 8; bits < size * size; bits++) {
+            int pixelX = bits % size;
+            int pixelY = (bits - pixelX) / size;
+            bufferedImage.setRGB(pixelX, pixelY, (random.nextBoolean() ? Color.white : Color.black).getRGB());
+        }
+
 
         File file = new File(new File(Dinary.ROOT_DIRECTORY, "dinary"), "dinary.png");
         try {
+            System.out.print("Writing: ");
             ImageIO.write(bufferedImage, "png", file);
+            System.out.println("Done");
         } catch (IOException e) {
             e.printStackTrace();
         }
