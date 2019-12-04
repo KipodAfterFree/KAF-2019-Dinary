@@ -20,11 +20,11 @@ public class Encoder {
         for (int i = 0; i < bytes.length; i++) {
             byte section = bytes[i];
             for (int bit = 0; bit < 8; bit++) {
-                int pixel = i * 8 + bit;
+                int pixel = (i * 8) + bit;
                 int pixelX = pixel % size;
                 int pixelY = (pixel - pixelX) / size;
                 if (pixelY < size) {
-                    bufferedImage.setRGB(pixelX, pixelY, ((section >> bit & 1) == 1 ? Color.white : Color.black).getRGB());
+                    bufferedImage.setRGB(pixelX, pixelY, ((section >> (7 - bit) & 1) == 1 ? Color.white : Color.black).getRGB());
                 }
             }
         }
